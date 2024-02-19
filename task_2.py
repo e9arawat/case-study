@@ -5,7 +5,7 @@ import csv
 from datetime import datetime, timedelta
 
 
-def get_merged_data(dam_data, rtm_data):
+def get_final_data(dam_data, rtm_data):
     """
     return the mergerd data
     """
@@ -51,7 +51,7 @@ def answer():
                     rtm_data[(date, hour)] = {1: 0, 2: 0, 3: 0, 4: 0}
                 rtm_data[(date, hour)][interval] = price
 
-    final_data = get_merged_data(dam_data, rtm_data)
+    final_data = get_final_data(dam_data, rtm_data)
 
     with open("task_2.csv", "w", encoding="utf-8-sig", newline="") as output_file:
         fieldnames = ["date", "dam", "rtm"]

@@ -5,7 +5,7 @@ import csv
 from datetime import datetime
 
 
-def get_merged_data(dam_data, avg_rtm):
+def get_final_data(dam_data, avg_rtm):
     """
     return final data
     """
@@ -55,7 +55,7 @@ def answer():
         hourly_price = sum(v) / 4
         avg_rtm[(date, hour)] = round(hourly_price, 2)
 
-    final_data = get_merged_data(dam_data, avg_rtm)
+    final_data = get_final_data(dam_data, avg_rtm)
 
     with open("task_1.csv", "w", encoding="utf-8", newline="") as f:
         fieldnames = ["date", "dam", "rtm"]
