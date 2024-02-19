@@ -5,64 +5,51 @@ import csv
 from datetime import datetime
 
 
-def get_final_data(dam_data, avg_rtm):
-    """
-    return final data
-    """
-    final_data = []
-    for dam_row in dam_data:
-        if dam_row["Settlement Point"] == "HB_NORTH":
-            date_str = dam_row["Delivery Date"]
-            hour = int(dam_row["Delivery Hour"])
-            dam_price = float(dam_row["Settlement Point Price"])
-            if (date_str, hour) in avg_rtm:
-                rtm_price = avg_rtm[(date_str, hour)]
-                date_time = datetime.strptime(date_str + f" {hour - 1}", "%m/%d/%Y %H")
-                date_formatted = date_time.strftime("%Y-%m-%d %H:%M:%S")
-                row_data = {
-                    "date": date_formatted,
-                    "dam": f"{float(dam_price):.2f}",
-                    "rtm": f"{float(rtm_price):.2f}",
-                }
-                final_data.append(row_data)
-    return final_data
-
-
 def answer():
     """
     Task - 1
     """
     with open("DAM_Prices_2022.csv", "r", encoding="utf-8-sig") as f:
         csv_reader = csv.DictReader(f)
-        dam_data = list(csv_reader)
-
-    rtm_data = {}
-    with open("RTM_Prices_2022.csv", "r", encoding="utf-8-sig") as f:
-        csv_reader = csv.DictReader(f)
+        dam_data = []
         for row in csv_reader:
             if row["Settlement Point"] == "HB_NORTH":
-                date = row["Delivery Date"]
-                hour = int(row["Delivery Hour"])
-                price = float(row["Settlement Point Price"])
-                if (date, hour) not in rtm_data:
-                    rtm_data[(date, hour)] = [price]
-                else:
-                    rtm_data[(date, hour)].append(price)
+                dam_data.append(row)
 
-    avg_rtm = {}
-    for k, v in rtm_data.items():
-        date, hour = k
-        hourly_price = sum(v) / 4
-        avg_rtm[(date, hour)] = round(hourly_price, 2)
+    with open("RTM_Prices_2022.csv", "r", encoding="utf-8-sig") as f:
+        csv_reader = csv.DictReader(f)
+        rtm_data = []
+        for row in csv_reader:
+            if row["Settlement Point"] == "HB_NORTH":
+                rtm_data.append(row)
 
-    final_data = get_final_data(dam_data, avg_rtm)
+    print(rtm_data[0]["Settlement Point Price"])
 
     with open("task_1.csv", "w", encoding="utf-8", newline="") as f:
         fieldnames = ["date", "dam", "rtm"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        for row in final_data:
-            writer.writerow(row)
+        index = 0
+        for data in dam_data:
+            date_obj = datetime.strptime(data["Delivery Date"], "%m/%d/%Y")
+            formatted_date = (
+                date_obj.strftime("%Y-%m-%d")
+                + " "
+                + str(int(data["Delivery Hour"]) - 1).zfill(2)
+                + ":00:00"
+            )
+            rtm = 0
+            for _ in range(4):
+                rtm += float(rtm_data[index]["Settlement Point Price"])
+                index += 1
+            rtm /= 4
+            dam = data["Settlement Point Price"]
+            row_data = {
+                "date": formatted_date,
+                "dam": f"{float(dam):.2f}",
+                "rtm": f"{float(rtm):.2f}",
+            }
+            writer.writerow(row_data)
 
 
 if __name__ == "__main__":
