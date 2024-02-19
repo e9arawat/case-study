@@ -9,7 +9,7 @@ def get_merged_data(dam_data, rtm_data):
     """
     return the mergerd data
     """
-    merged_data = []
+    final_data = []
     for dam_row in dam_data:
         if dam_row["Settlement Point"] == "HB_NORTH":
             date_str = dam_row["Delivery Date"]
@@ -24,10 +24,10 @@ def get_merged_data(dam_data, rtm_data):
                 row_data = {
                     "date": date_formatted,
                     "dam": f"{float(dam_price) : .2f}",
-                    "rtm": f"{float(rtm_price) : .2f}"
+                    "rtm": f"{float(rtm_price) : .2f}",
                 }
-                merged_data.append(row_data)
-    return merged_data
+                final_data.append(row_data)
+    return final_data
 
 
 def answer():
@@ -51,13 +51,13 @@ def answer():
                     rtm_data[(date, hour)] = {1: 0, 2: 0, 3: 0, 4: 0}
                 rtm_data[(date, hour)][interval] = price
 
-    merged_data = get_merged_data(dam_data, rtm_data)
+    final_data = get_merged_data(dam_data, rtm_data)
 
     with open("task_2.csv", "w", encoding="utf-8-sig", newline="") as output_file:
         fieldnames = ["date", "dam", "rtm"]
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
-        for row in merged_data:
+        for row in final_data:
             writer.writerow(row)
 
 

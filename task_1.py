@@ -7,9 +7,9 @@ from datetime import datetime
 
 def get_merged_data(dam_data, avg_rtm):
     """
-    return mergerd data
+    return final data
     """
-    merged_data = []
+    final_data = []
     for dam_row in dam_data:
         if dam_row["Settlement Point"] == "HB_NORTH":
             date_str = dam_row["Delivery Date"]
@@ -24,8 +24,8 @@ def get_merged_data(dam_data, avg_rtm):
                     "dam": f"{float(dam_price):.2f}",
                     "rtm": f"{float(rtm_price):.2f}",
                 }
-                merged_data.append(row_data)
-    return merged_data
+                final_data.append(row_data)
+    return final_data
 
 
 def answer():
@@ -55,13 +55,13 @@ def answer():
         hourly_price = sum(v) / 4
         avg_rtm[(date, hour)] = round(hourly_price, 2)
 
-    merged_data = get_merged_data(dam_data, avg_rtm)
+    final_data = get_merged_data(dam_data, avg_rtm)
 
     with open("task_1.csv", "w", encoding="utf-8", newline="") as f:
         fieldnames = ["date", "dam", "rtm"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        for row in merged_data:
+        for row in final_data:
             writer.writerow(row)
 
 
