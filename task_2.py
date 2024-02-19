@@ -24,7 +24,7 @@ def get_merged_data(dam_data, rtm_data):
                 row_data = {
                     "date": date_formatted,
                     "dam": f"{float(dam_price) : .2f}",
-                    "rtm": rtm_price,
+                    "rtm": f"{float(rtm_price) : .2f}"
                 }
                 merged_data.append(row_data)
     return merged_data
