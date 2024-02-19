@@ -16,20 +16,20 @@ def solver():
         data = list(csv_reader)
         dam_data, rtm_data = [], []
         for x in data:
-            dam_data.append([x["date"][:10], float(x["dam"])])
-            rtm_data.append([x["date"][:10], float(x["rtm"])])
+            dam_data.append({"date": x["date"], "price": float(x["dam"])})
+            rtm_data.append({"date": x["date"], "price": float(x["rtm"])})
         dam_nb2, rtm_nb2 = [], []
         for index in range(0, len(dam_data), 24):
             dam_nb2.append(answer(dam_data[index : index + 24], 2))
             rtm_nb2.append(answer(rtm_data[index : index + 24], 2))
-        with open("dam_tb2.csv", "a", encoding="utf-8") as f:
+        with open("dam_tb2.csv", "a", encoding="utf-8", newline="") as f:
             fieldnames = ["date", "TB2"]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for row in dam_nb2:
                 writer.writerow(row)
 
-        with open("rtm_tb2.csv", "a", encoding="utf-8") as f:
+        with open("rtm_tb2.csv", "a", encoding="utf-8", newline="") as f:
             fieldnames = ["date", "TB2"]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
