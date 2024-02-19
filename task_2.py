@@ -23,8 +23,8 @@ def get_final_data(dam_data, rtm_data):
                 date_formatted = date_time_interval.strftime("%Y-%m-%d %H:%M:%S")
                 row_data = {
                     "date": date_formatted,
-                    "dam": f"{float(dam_price) : .2f}",
-                    "rtm": f"{float(rtm_price) : .2f}",
+                    "dam": f"{float(dam_price):.2f}",
+                    "rtm": f"{float(rtm_price):.2f}",
                 }
                 final_data.append(row_data)
     return final_data
