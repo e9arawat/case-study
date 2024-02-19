@@ -23,8 +23,6 @@ def answer():
             if row["Settlement Point"] == "HB_NORTH":
                 rtm_data.append(row)
 
-    print(rtm_data[0]["Settlement Point Price"])
-
     with open("task_1.csv", "w", encoding="utf-8", newline="") as f:
         fieldnames = ["date", "dam", "rtm"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
