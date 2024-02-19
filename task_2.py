@@ -16,9 +16,9 @@ def get_final_data(dam_data, rtm_data):
             hour = int(dam_row["Delivery Hour"])
             dam_price = float(dam_row["Settlement Point Price"])
             date_time = datetime.strptime(date_str, "%m/%d/%Y")
-            for interval in range(1, 5):
-                rtm_price = rtm_data[(date_str, hour)][interval]
-                time = (hour - 1) * 60 + (interval - 1) * 15
+            for i in range(4):
+                rtm_price = rtm_data[(date_str, hour)][i]
+                time = (hour - 1) * 60 + (i - 1) * 15
                 date_time_interval = date_time + timedelta(minutes=time)
                 date_formatted = date_time_interval.strftime("%Y-%m-%d %H:%M:%S")
                 row_data = {
@@ -48,8 +48,9 @@ def answer():
                 interval = int(row["Delivery Interval"])
                 price = float(row["Settlement Point Price"])
                 if (date, hour) not in rtm_data:
-                    rtm_data[(date, hour)] = {1: 0, 2: 0, 3: 0, 4: 0}
-                rtm_data[(date, hour)][interval] = price
+                    rtm_data[(date, hour)] = [price]
+                else:
+                    rtm_data[(date, hour)].append(price)
 
     final_data = get_final_data(dam_data, rtm_data)
 
