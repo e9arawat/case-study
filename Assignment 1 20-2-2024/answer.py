@@ -8,7 +8,16 @@ def answer(date_price, n):
     """
     Modified TBn
     """
-
+    # date_price = [
+    #     {'hour': 1, 'price': 70},
+    #     {'hour': 2, 'price': 30},
+    #     {'hour': 3, 'price': 40},
+    #     {'hour': 4, 'price': 20},
+    #     {'hour': 5, 'price': 50},
+    #     {'hour': 6, 'price': 30},
+    #     {'hour': 7, 'price': 40},
+    #     {'hour': 8, 'price': 20},
+    # ]
     final_top, final_bottom = [], []
 
     for _ in range(n):
@@ -18,6 +27,9 @@ def answer(date_price, n):
         for data in date_price:
             if not top and not bottom:
                 top, bottom, extra_bottom = data, data, data
+            elif top == bottom and top["price"] > data["price"]:
+                top, bottom, extra_bottom = data, data, data
+
             elif bottom["price"] > data["price"] and top["price"] > data["price"]:
                 if extra_bottom["price"] > data["price"]:
                     extra_bottom = data
