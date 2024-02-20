@@ -29,7 +29,6 @@ def answer(date_price, n):
         else:
             date_price.remove(bottom)
             date_price.remove(top)
-        print(max_difference)
         tb2 += max_difference
     date_string = date_price[0]["date"]
     formatted_date = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S").strftime(
